@@ -1,0 +1,21 @@
+---
+ - name: Install Squid
+   hosts: test
+   become: yes
+  
+   vars:
+     source_folder: /home/ura/project/anton
+     destin_folder: /tmp
+
+   tasks:
+   - name: Copy script for download and unzip vault
+     copy: src={{ source_folder }}/{{ item }} dest={{ destin_folder }} owner=root mode=0755
+     loop:
+        - ping.sh
+   - name: Run script
+     command: /tmp/./ping.sh 
+#   - name: Run script
+#      ansible.builtin.script: 
+#        cmd: /tmp/vault_rep.sh --some-argument 1234
+
+    

@@ -1,0 +1,21 @@
+---
+ - name: Install Vault
+   hosts: all
+   become: yes
+   vars:
+    source_folder: /home/user/project/shell
+    destin_folder: /temp
+    tasks:
+     - name: Create folder
+       file:
+         path=/temp
+         mode=0755
+         owner=root
+         group=root
+         state=directory
+     - name: copy files to server
+       copy: src={{ source_file }}/{{ item }} dest={{ destin_file }}
+       loop:
+        - vault_rep.sh  
+     
+      

@@ -1,0 +1,7 @@
+---
+ - name: vault start
+   hosts: test
+   become: yes
+   tasks:
+    - name: start
+      command: /usr/local/bin/vault server -dev
