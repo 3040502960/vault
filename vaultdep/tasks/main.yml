@@ -1,0 +1,60 @@
+---
+# tasks file for vaultdep
+
+ - name: Download vault
+   get_url:
+     url: https://releases.hashicorp.com/vault/1.7.0-rc1/vault_1.7.0-rc1_linux_amd64.zip
+     dest: /tmp/vault_1.7.0-rc1_linux_amd64.zip
+
+ - name: Unarhive vault
+   unarchive:
+      src: /tmp/vault_1.7.0-rc1_linux_amd64.zip
+      dest: /usr/local/bin
+      remote_src: yes
+
+ - name: Groupadd vault
+   group: name=vault state=present
+
+ - name: Useradd vault
+   user: name=vault group=vault shell=/bin/false
+
+ - name: Create directory etc
+   file: path=/etc/vault
+    owner=vault
+    group=vault
+    state=directory
+
+ - name: Create directory lib data
+   file: path=/var/lib/vault/data
+    owner=vault
+    group=vault
+    state=directory
+
+ - name: Copy file service
+   copy: src={{ source_folder }}/vault.service dest={{ service_folder }}
+  
+ - name: Copy config etc
+   copy: src={{ source_folder }}/config.hcl dest={{ etc_folder }}
+
+ - name: Read line bashrc
+   lineinfile: dest=/root/.bashrc line="export VAULT_ADDR=http://127.0.0.1:8200"
+
+ - name: Start service vault
+   service:
+    name: vault
+    state: started
+    enabled: yes
+
+ - name: Delete files for inialisation server vault generation keys
+   shell: /bin/rm -rf  /var/lib/vault/data/*
+   ignore_errors: false
+
+ - name: Command for generation keys for redirection
+   copy: src={{ source_folder }}/initfile.sh dest={{ destin_folder }} owner=root mode=0755
+
+ - name: Run script
+   command: /tmp/./initfile.sh
+
+
+
+

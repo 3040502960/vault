@@ -1,0 +1,10 @@
+---
+# handlers file for vaultdep
+
+   - name: Reload Vault
+
+     service:
+
+      name: vault
+
+      state: reloaded

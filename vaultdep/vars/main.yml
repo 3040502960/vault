@@ -1,0 +1,12 @@
+---
+# vars file for vaultdep
+
+     source_folder: ./
+
+     destin_folder: /tmp
+
+     service_folder: /lib/systemd/system
+
+     etc_folder: /etc/vault
+
+
